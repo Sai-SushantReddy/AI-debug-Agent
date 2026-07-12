@@ -1,3 +1,4 @@
+from langchain.tools import Tool
 def analyze_code_tool(code):
     """
     Takes code with error and prepares a structured prompt
@@ -16,3 +17,9 @@ def analyze_code_tool(code):
     Code:
     {code}
     """
+
+debug_tool = Tool(
+    name="Code Debugger",
+    func=analyze_code_tool,
+    description ="Use this tool for debugging code, syntax errors, exceptions, and programming issues."
+)

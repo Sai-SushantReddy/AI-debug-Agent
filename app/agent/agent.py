@@ -1,7 +1,8 @@
 from langchain_groq import ChatGroq
+from langchain.agents import initialize_agent,AgentType
 from dotenv import load_dotenv
 import os
-from agent.tools import analyze_code_tool
+from agent.tools import debug_tool
 
 
 load_dotenv()
@@ -27,16 +28,17 @@ def is_code_related(user_input):
 
     return any(keyword in user_input.lower() for keyword in keywords)
 
-def ask_llm(query):
-    response = llm.invoke(query)
-    return response.content
 
-def debug_agent(user_input):
-    if is_code_related(user_input):
-        tool_prompt = analyze_code_tool(user_input)
-    else:
-        tool_prompt = user_input
-
-    response = llm.invoke(tool_prompt)
-    return response.content
 #print(ask_llm("What is the time period of second world war"))
+tools = [debug_tool]
+
+agent = initialize_agent(
+    tools=tools,
+    llm=llm,
+    agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+    verbose=True
+)
+
+def run_agent(user_input):
+    response = agent.run(user_input)
+    return response

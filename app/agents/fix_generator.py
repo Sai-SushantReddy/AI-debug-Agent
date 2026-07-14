@@ -19,7 +19,8 @@ def generate_fix(
     code: str,
     error: str,
     language: str,
-    error_analysis: str
+    error_analysis: str,
+    tool_result:str
 ) -> FixProposal:
 
     prompt = f"""
@@ -38,6 +39,13 @@ def generate_fix(
 
     Error Analysis:
     {error_analysis}
+
+     Deterministic Debugging Tool Result:
+    {tool_result}
+
+    Use the deterministic tool result as grounded
+    debugging evidence when generating the fix.
+
 
 Provide:
 - an explanation of the fix

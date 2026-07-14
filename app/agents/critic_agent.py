@@ -38,10 +38,12 @@ def review_fix(
 
     Review the proposed fix.
 
+
+
     Determine:
     - whether the fix should be accepted
     - any remaining issues
-    - feedback for improving the fix
+    - concise technical feedback
     """
 
     return structured_llm.invoke(prompt)

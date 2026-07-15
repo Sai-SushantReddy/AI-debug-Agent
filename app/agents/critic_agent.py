@@ -10,15 +10,17 @@ class CriticResult(BaseModel):
 
 
 structured_llm = llm.with_structured_output(
-    CriticResult
+    CriticResult,
+    method="json_mode"
 )
 
 
 def review_fix(
     original_code: str,
     error: str,
-    fixed_code: str,
-    explanation: str
+    file_changes: str,
+    explanation: str,
+    validation_result: str
 ) -> CriticResult:
 
     prompt = f"""
@@ -30,14 +32,45 @@ def review_fix(
     Original Error:
     {error}
 
-    Proposed Fixed Code:
-    {fixed_code}
+    Proposed Repository File Changes:
+    {file_changes}
 
     Fix Explanation:
     {explanation}
 
+    Deterministic Validation Result:
+    {validation_result}
+
     Review the proposed fix.
 
+    Return ONLY a valid JSON object.
+
+The JSON must follow exactly this structure:
+
+{{
+    "accepted": true,
+    "issues": [],
+    "feedback": "concise technical review"
+}}
+
+Important JSON Rules:
+- accepted MUST be a JSON boolean.
+- issues MUST be a JSON array of strings.
+- If there are no issues, return [].
+- Do not return issues as a string.
+- Do not wrap the JSON in markdown.
+
+    Critic rules:
+- Determine whether the proposed file changes address the root cause.
+- Check whether the correct repository file is being modified.
+- Use the validation result as deterministic evidence.
+- Identify technical correctness, syntax, dependency, runtime,
+  or logic issues only.
+- Do not request explanatory comments unless required for correctness.
+- If there are no issues, return an empty issues list.
+- Never return "None" or "No issues" inside the issues list.
+- Accept only if the fix directly addresses the reported error
+  without introducing obvious new problems.
 
 
     Determine:

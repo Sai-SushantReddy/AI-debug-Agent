@@ -16,6 +16,11 @@ async def debug_code(request: DebugRequest):
             "code": request.code,
             "error": request.error,
             "language": request.language,
+            "project_files": [
+                file.model_dump()
+                for file in request.project_files
+            ],
+            "retrieval_context":[],
             "retry_count": 0
         }
     )

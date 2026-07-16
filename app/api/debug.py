@@ -21,6 +21,7 @@ async def debug_code(request: DebugRequest):
                 for file in request.project_files
             ],
             "retrieval_context":[],
+            "retry_history":[],
             "retry_count": 0
         }
     )

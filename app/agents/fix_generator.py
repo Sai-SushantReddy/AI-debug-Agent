@@ -27,7 +27,8 @@ def generate_fix(
     language: str,
     error_analysis: str,
     tool_result: str,
-    retrieved_context: str
+    retrieved_context: str,
+    previous_feedback: str
 ) -> FixProposal:
 
     prompt = f"""
@@ -53,6 +54,14 @@ Deterministic Debugging Tool Result:
 Retrieved Repository Context:
 {retrieved_context}
 
+Previous Critic Feedback:
+
+{previous_feedback}
+
+If this is not empty,
+improve the previous fix by addressing every issue raised.
+
+Do not repeat the same incorrect solution.
 Identify the actual root-cause file and propose the required
 repository file changes.
 

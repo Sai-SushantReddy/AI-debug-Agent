@@ -85,6 +85,11 @@ class ValidationResultState(TypedDict):
     valid: bool
     files: list[FileValidationState]
 
+class RetryHistoryState(TypedDict):
+    attempt: int
+    critic_feedback: str
+    accepted: bool
+
 class DebugState(TypedDict):
     code: str
     error: str
@@ -97,6 +102,7 @@ class DebugState(TypedDict):
     tool_result: ToolResultState
     proposed_fix: FixProposalState
     validation_result: SyntaxCheckResult
+    critic: CriticResultState
     final_report: FinalReportState
-
     retry_count: int
+    retry_history: list[RetryHistoryState]
